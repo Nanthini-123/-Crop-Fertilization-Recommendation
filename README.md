@@ -23,4 +23,7 @@ This project is a **Crop and Fertilization Recommendation System** that helps fa
 3.Run the main program:
   	 python app.py
 4.	Follow on-screen instructions to input soil type, crop type, and season.
- 	 	
+
+
+AUTHOR 
+  NANTHINI K
