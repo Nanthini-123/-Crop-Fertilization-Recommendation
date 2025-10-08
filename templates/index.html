@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop & Fertilizer Recommendation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: auto;
+        }
+        input, select, button {
+            width: 90%;
+            margin: 10px;
+            padding: 8px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #cropResult, #fertilizerResult {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Crop & Fertilizer Recommendation System</h1>
+
+    <form id="cropForm">
+        <h2>Crop Recommendation</h2>
+        <input type="number" id="N" placeholder="Nitrogen (N)" required>
+        <input type="number" id="P" placeholder="Phosphorous (P)" required>
+        <input type="number" id="K" placeholder="Potassium (K)" required>
+        <input type="number" id="temp" placeholder="Temperature (°C)" required>
+        <input type="number" id="hum" placeholder="Humidity (%)" required>
+        <input type="number" id="ph" placeholder="pH Level" required>
+        <input type="number" id="rain" placeholder="Rainfall (mm)" required>
+        <button type="button" onclick="predictCrop()">Recommend Crop</button>
+    </form>
+
+    <div id="cropResult"></div>
+
+    <form id="fertilizerForm">
+        <h2>Fertilizer Recommendation</h2>
+        <select id="soilType">
+            <option value="Sandy">Sandy</option>
+            <option value="Loamy">Loamy</option>
+            <option value="clayey">clayey</option>
+            <option value="black">black</option>
+            <option value="red">red</option>
+          
+        </select>
+        <select id="cropType">
+            <option value="Wheat">Wheat</option>
+            <option value="Rice">Rice</option>
+            <option value="Maize">Maize</option>
+            <option value="Sugarcane">Sugarcane</option>
+            <option value="Cotton">Cotton</option>
+            <option value="Tobacco">Tobacco</option>
+            <option value="Paddy">Paddy</option>
+            <option value="Barley">Barley</option>
+            <option value="Millets">Millets</option>
+            <option value="Oil seeds">Oil seeds</option>
+            <option value="Pulses">Pulses</option>
+            <option value="Ground Nuts">Ground Nuts</option>
+            
+        </select>
+        <input type="number" id="temperature" placeholder="Temperature (°C)" required>
+        <input type="number" id="humidity" placeholder="Humidity (%)" required>
+        <input type="number" id="moisture" placeholder="Moisture (%)" required>
+        <input type="number" id="nitrogen" placeholder="Nitrogen (N)" required>
+        <input type="number" id="potassium" placeholder="Potassium (K)" required>
+        <input type="number" id="phosphorous" placeholder="Phosphorous (P)" required>
+        <button type="button" onclick="recommendFertilizer()">Recommend Fertilizer</button>
+    </form>
+
+    <div id="fertilizerResult"></div>
+
+    <script>
+        async function predictCrop() {
+            let data = {
+                N: document.getElementById("N").value,
+                P: document.getElementById("P").value,
+                K: document.getElementById("K").value,
+                temp: document.getElementById("temp").value,
+                hum: document.getElementById("hum").value,
+                ph: document.getElementById("ph").value,
+                rain: document.getElementById("rain").value
+            };
+
+            let response = await fetch("/predict_crop", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            let result = await response.json();
+            document.getElementById("cropResult").innerText = result["Recommended Crop"] || result.error;
+        }
+
+        async function recommendFertilizer() {
+            let data = {
+                "Soil Type": document.getElementById("soilType").value,
+                "Crop Type": document.getElementById("cropType").value,
+                "Temparature": document.getElementById("temperature").value,
+                "Humidity": document.getElementById("humidity").value,
+                "Moisture": document.getElementById("moisture").value,
+                "Nitrogen": document.getElementById("nitrogen").value,
+                "Potassium": document.getElementById("potassium").value,
+                "Phosphorous": document.getElementById("phosphorous").value
+            };
+
+            let response = await fetch("/recommend_fertilizer", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            let result = await response.json();
+            document.getElementById("fertilizerResult").innerText = result["Recommended Fertilizer"] || result.error;
+        }
+    </script>
+
+</body>
+</html>
