@@ -18,3 +18,9 @@ This project is a **Crop and Fertilization Recommendation System** that helps fa
 1. Clone the repository:
    ```bash
    git clone https://github.com/nanthinik/Crop-Fertilization-Recommendation.git
+2.	Navigate to the project folder:
+   cd Crop-Fertilization-Recommendation
+3.Run the main program:
+  	 python app.py
+4.	Follow on-screen instructions to input soil type, crop type, and season.
+ 	 	
